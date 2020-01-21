@@ -12,6 +12,20 @@ import {
   localeReplacer,
 } from './utils';
 
+function deleteFolderRecursive(path) {
+  if( fs.existsSync(path) ) {
+    fs.readdirSync(path).forEach(function(file,index){
+      const curPath = path + "/" + file
+      if(fs.lstatSync(curPath).isDirectory()) { // recurse
+        deleteFolderRecursive(curPath)
+      } else { // delete file
+        fs.unlinkSync(curPath)
+      }
+    });
+    fs.rmdirSync(path)
+  }
+}
+
 /**
  * @description Initialize from key.
  * @param key
@@ -69,6 +83,10 @@ export function pull(rootFolder, targetPath, locale, raw=false) {
     const configPath = getConfigPath();
     const projectName = getProjectName();
     const localeappKey = JSON.parse(fs.readFileSync(configPath, 'utf8'))[projectName];
+
+    deleteFolderRecursive(rootFolder)
+    fs.mkdirSync(rootFolder)
+
     return localeappPull(localeappKey)
       .then(({ response, body }) => {
         const localesArray = ymlToJson(body);
@@ -77,13 +95,31 @@ export function pull(rootFolder, targetPath, locale, raw=false) {
           const ymlLocale = jsonToYml({ [l[0]]: l[1] });
           createFile(targetPath, l[0], ymlLocale);
         });
+
         if (raw) return {};
-        const compiledLocale = fs.readFileSync(`${targetPath}/${locale}.yml`, 'utf8');
-        const updatedFolders = toFolders(rootFolder, compiledLocale, locale);
-        console.log('Folders updated');
-        return updatedFolders;
+
+        Object.keys(localesArray).map((locale) => {
+          let tmpTargetPath = targetPath
+
+          localeReplacer.map((item) => tmpTargetPath = tmpTargetPath.replace(item, locale))
+
+          const localeYmlPath = `${tmpTargetPath}/${locale}.yml`
+          const indexYmlPath = `${tmpTargetPath}/index.yml`
+
+          const compiledLocale = fs.readFileSync(localeYmlPath, 'utf8');
+          const updatedFolders = toFolders(tmpTargetPath, compiledLocale, locale);
+          console.log(locale, 'folder updated');
+
+          if (fs.existsSync(localeYmlPath)) fs.unlinkSync(localeYmlPath);
+          if (fs.existsSync(indexYmlPath)) fs.unlinkSync(indexYmlPath);
+
+          return updatedFolders
+        })
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        deleteFolderRecursive(rootFolder)
+        return console.error(err)
+      })
   }
   catch (err) {
     console.error('No localeapp project key found! Please specify one with the init command');

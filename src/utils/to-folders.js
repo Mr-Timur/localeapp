@@ -8,76 +8,39 @@ import { ymlToJson, jsonToYml } from './convert';
  * @param json
  * @param rootFolder
  */
-function parseTranslation(json, rootFolder) {
-  const { children } = getSectionsTree(rootFolder);
-  const manifestFile = find(children, { extension: 'json' });
+function parseTranslation(json, rootFolder, acc = 0) {
   const final = {};
   if (! json || isEmpty(json)) {
     return final;
   }
-  if (manifestFile) {
-    const manifest = JSON.parse(manifestFile.content);
-    const newJson = {};
+  const newJson = {};
 
-    for (const key in manifest) {
-      if (manifest.hasOwnProperty(key)) {
-        const val = manifest[key];
-        const matchExample = val.match(/{{(.*)}}/);
+  for (const key in json) {
+    const targetFolder = `${rootFolder}/${key}`
 
-        if ( ! isEmpty(matchExample)) {
-          Object.assign(newJson, {
-            [key]: val,
-          });
-
-          const folder = matchExample[1];
-
-          // this we return
-          Object.assign(final, {
-            [folder]: parseTranslation(json[key], `${rootFolder}/${folder}`),
-          });
-
-          json = omit(json, key);   // deletes the folder key so that we are
-        }
-
-        else {
-          if (json[key]) {
-            Object.assign(newJson, {
-              [key]: json[key],
-            });
-
-            json = omit(json, key);
-          }
-        }
+    if (acc < 1 && typeof json[key] === 'object') {
+      if (!fs.existsSync(targetFolder)) {
+        fs.mkdirSync(targetFolder)
       }
+
+      // this we return
+      Object.assign(final, {
+        [key]: parseTranslation(json[key], targetFolder, acc + 1),
+      })
+
+      json = omit(json, key);   // deletes the folder key so that we are
+    } else {
+      fs.writeFileSync(`${targetFolder}.yml`, jsonToYml(json));
+      json = omit(json, key);   // deletes the folder key so that we are
     }
-
-    // add updated manifest to folder structure object
-    Object.assign(final, {
-      manifest: newJson,
-    });
-
-    fs.writeFileSync(`${rootFolder}/manifest.json`, JSON.stringify(newJson, null, 2));
   }
-
-  if (!manifestFile && children.length > 1 ) {
-    children.map((file) => {
-      const name = file.name.split('.')[0];
-      const content = json[name];
-      if (content) {
-        fs.writeFileSync(`${rootFolder}/${name}.yml`, jsonToYml(content));
-        json = omit(json, name);
-      }
-    });
-  }
-
-  // now replace the rest in the manifest
-  fs.writeFileSync(`${rootFolder}/index.yml`, jsonToYml(json));
 
   // add new contents of the yml (not parsed)
   Object.assign(final, {
     index: json,
-  });
-  return final;
+  })
+
+  return final
 }
 
 export default function toFolders(rootFolder, target, locale) {

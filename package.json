@@ -1,21 +1,38 @@
 {
-  "name": "@mr_timur_m/localeapp",
-  "version": "1.1.1",
-  "description": "LocaleApp manager",
-  "main": "dist/index.js",
-  "repository": "https://github.com/Mr-Timur/localeapp.git",
-  "author": "tymur.mirzada@gmail.com",
-  "license": "MIT",
-  "preferGlobal": true,
-  "scripts": {
-    "build": "yarn clean && babel src -d dist",
-    "clean": "rm -rf dist",
-    "prepublish": "yarn test && yarn build",
-    "test": "mocha --require @babel/register --reporter spec ./test ./src"
+  "_from": "@mr_timur_m/localeapp@1.6.5",
+  "_id": "@mr_timur_m/localeapp@1.6.5",
+  "_inBundle": false,
+  "_integrity": "sha512-DC3LC4k2hYR9ZJOdXUwEHgIowuaLDdsf6jXq219Bw3lyZlN6u7j662xrOtBbgECxtco3FPnygCRZPAQvqQlKVQ==",
+  "_location": "/@mr_timur_m/localeapp",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@mr_timur_m/localeapp@1.6.5",
+    "name": "@mr_timur_m/localeapp",
+    "escapedName": "@mr_timur_m/localeapp",
+    "scope": "@mr_timur_m",
+    "rawSpec": "1.1.1",
+    "saveSpec": null,
+    "fetchSpec": "1.1.1"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/@mr_timur_m/localeapp/-/localeapp-1.6.5.tgz",
+  "_shasum": "73111121a2402473c2d6396d18d0f38cd6bcd0dd",
+  "_spec": "@mr_timur_m/localeapp@1.6.5",
+  "_where": "/Users/timur/Projects/elopage_web_client",
+  "author": {
+    "name": "tymur.mirzada@gmail.com"
   },
   "bin": {
     "localeapp": "./dist/bin/index.js"
   },
+  "bugs": {
+    "url": "https://github.com/Mr-Timur/localeapp/issues"
+  },
+  "bundleDependencies": false,
   "dependencies": {
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "commander": "^2.19.0",
@@ -26,6 +43,8 @@
     "request": "^2.88.0",
     "user-home": "^2.0.0"
   },
+  "deprecated": false,
+  "description": "LocaleApp manager",
   "devDependencies": {
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.2.0",
@@ -33,5 +52,25 @@
     "@babel/register": "^7.0.0",
     "chai": "^4.2.0",
     "mocha": "^5.2.0"
-  }
+  },
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "homepage": "https://github.com/Mr-Timur/localeapp#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "name": "@mr_timur_m/localeapp",
+  "preferGlobal": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mr-Timur/localeapp.git"
+  },
+  "scripts": {
+    "build": "yarn clean && babel src -d dist",
+    "clean": "rm -rf dist",
+    "prepublish": "yarn test && yarn build",
+    "test": "mocha --require @babel/register --reporter spec ./test ./src"
+  },
+  "version": "1.6.5"
 }
