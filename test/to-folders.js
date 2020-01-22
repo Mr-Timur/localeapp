@@ -23,7 +23,7 @@ describe('toFolders(rootFolder, target, locale)', () => {
   });
 
   it('Should take the contents of the target file and update the manifests (root)', () => {
-    const sections = toFolders(path.resolve(__dirname, './mock/config/generated/sections'), en, 'en_to');
+    const sections = toFolders(path.resolve(__dirname, './mock/config/generated/sections'), en, 'en_to', {});
     const updatedQuick = get(sections, 'order.quick-services.index');
   });
 });

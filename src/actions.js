@@ -78,7 +78,7 @@ function writeConfig(fd, keys) {
  * @param raw
  * @returns {Promise<any | never | void>}
  */
-export function pull(rootFolder, targetPath, locale, raw=false) {
+export function pull(rootFolder, targetPath, options, raw=false) {
   try {
     const configPath = getConfigPath();
     const projectName = getProjectName();
@@ -107,7 +107,7 @@ export function pull(rootFolder, targetPath, locale, raw=false) {
           const indexYmlPath = `${tmpTargetPath}/index.yml`
 
           const compiledLocale = fs.readFileSync(localeYmlPath, 'utf8');
-          const updatedFolders = toFolders(tmpTargetPath, compiledLocale, locale);
+          const updatedFolders = toFolders(tmpTargetPath, compiledLocale, locale, options);
           console.log(locale, 'folder updated');
 
           if (fs.existsSync(localeYmlPath)) fs.unlinkSync(localeYmlPath);

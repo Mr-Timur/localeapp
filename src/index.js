@@ -10,28 +10,27 @@ import {init, pull, push, update} from './actions';
  * @param extra
  * @returns {*}
  */
-export default function localeapp(command, rootFolder, targetPath, option, extra) {
+export default function localeapp(command, rootFolder, targetPath, options, extra) {
   const { pushDefault, watchFiles, raw } = extra;
-  const defaultLocale = option;
   if (command === 'init') {
-    init(option);
+    init(options.key);
   }
   else if (command === 'update') {
     if (watchFiles) {
       console.log('Louki watching for changes in root folder...');
-      update(rootFolder, targetPath, defaultLocale); // run once
+      update(rootFolder, targetPath, options); // run once
       watch(rootFolder, { recursive: true, filter: /\.(json|yml)$/ }, (evt, fileName) => {
         console.log(evt, fileName.replace(rootFolder, ''));
-        return update(rootFolder, targetPath, defaultLocale);
+        return update(rootFolder, targetPath, options);
       });
     }
     else {
-      return update(rootFolder, targetPath, defaultLocale);
+      return update(rootFolder, targetPath, options);
     }
   }  else if (command === 'push') {
-    return push(rootFolder, targetPath, defaultLocale, pushDefault, raw);
+    return push(rootFolder, targetPath, options, pushDefault, raw);
   }  else if (command === 'pull') {
-    return pull(rootFolder, targetPath, defaultLocale, raw);
+    return pull(rootFolder, targetPath, options, raw);
   }  else {
     console.error('Command not found');
   }

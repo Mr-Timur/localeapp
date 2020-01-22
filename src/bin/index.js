@@ -8,14 +8,14 @@ const conf = {};
 const appCfg = require('rc')('localeapp', conf);
 
 let cmdValue = undefined;
-let optionsValue = undefined;
+let optionsValue = {};
 
 commander
   .version('1.0.0')
   .arguments('<cmd> [options]')
   .action(function (cmd, options) {
     cmdValue = cmd ;
-    optionsValue = options;
+    optionsValue = { ...optionsValue, ...options };
   });
 
 commander
@@ -59,33 +59,34 @@ if (typeof cmdValue === 'undefined') {
   let rootPath = path.resolve('./');
   let localeTarget = appCfg.target;
   let localeSource = appCfg.source;
-  let defaultLocale = appCfg.default;
+  let localeAppKey = optionsValue.localeapp_key
 
   if (cmdValue === 'init') {
-    if(!optionsValue && !process.env.LOCALEAPP_KEY) {
+    if(!localeAppKey && !process.env.LOCALEAPP_KEY) {
       console.error('Localeapp key not specified.');
       process.exit();
     }
 
-    if(!optionsValue && process.env.LOCALEAPP_KEY) {
-      optionsValue = process.env.LOCALEAPP_KEY
+    if(!localeAppKey && process.env.LOCALEAPP_KEY) {
+      localeAppKey = process.env.LOCALEAPP_KEY
     }
   }
 
   if (typeof localeTarget === 'undefined'
     || typeof localeSource === 'undefined'
-    || typeof defaultLocale === 'undefined') {
-    console.error('Missing config options! Provide root, source, default');
+    || typeof appCfg.routes === 'undefined') {
+    console.error('Missing config options! Provide root, source, routes');
     process.exit();
   }
 
   const targetPath = rootPath + '/' + localeTarget;
   const sourcePath = rootPath + '/' + localeSource;
   const extra = {
-    pushDefault: optionsValue == defaultLocale,
     watchFiles: commander.watch,
     raw: commander.raw,
   };
 
-  localeapp(cmdValue, sourcePath, targetPath, optionsValue || defaultLocale, extra);
+  optionsValue = { ...optionsValue, routes: appCfg.routes, key: localeAppKey }
+
+  localeapp(cmdValue, sourcePath, targetPath, optionsValue, extra);
 }
