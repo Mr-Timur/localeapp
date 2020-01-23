@@ -32,7 +32,7 @@ function parseTranslation(json, rootFolder, options, acc = 0) {
 
       json = omit(json, key);   // deletes the folder key so that we are
     } else {
-      fs.writeFileSync(`${targetFolder}.yml`, jsonToYml(json));
+      fs.writeFileSync(`${targetFolder}.yml`, jsonToYml(json[key]));
       json = omit(json, key);   // deletes the folder key so that we are
     }
   }

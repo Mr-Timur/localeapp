@@ -1,6 +1,3 @@
-quick_services:
-  quick: 'Veloce %{cammina}'
-  service: 'Servizio %{ciao}'
-  haha: fsdflkj
-another_key: theo ther e
-an_extra_key: lalal the key
+quick: 'Veloce %{cammina}'
+service: 'Servizio %{ciao}'
+haha: fsdflkj
