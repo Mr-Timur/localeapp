@@ -1,6 +1,6 @@
 {
-  "_from": "@mr_timur_m/localeapp@1.6.7",
-  "_id": "@mr_timur_m/localeapp@1.6.7",
+  "_from": "@mr_timur_m/localeapp@1.7.1",
+  "_id": "@mr_timur_m/localeapp@1.7.1",
   "_inBundle": false,
   "_integrity": "sha512-DC3LC4k2hYR9ZJOdXUwEHgIowuaLDdsf6jXq219Bw3lyZlN6u7j662xrOtBbgECxtco3FPnygCRZPAQvqQlKVQ==",
   "_location": "/@mr_timur_m/localeapp",
@@ -8,7 +8,7 @@
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "@mr_timur_m/localeapp@1.6.7",
+    "raw": "@mr_timur_m/localeapp@1.7.1",
     "name": "@mr_timur_m/localeapp",
     "escapedName": "@mr_timur_m/localeapp",
     "scope": "@mr_timur_m",
@@ -19,9 +19,9 @@
   "_requiredBy": [
     "#USER"
   ],
-  "_resolved": "https://registry.npmjs.org/@mr_timur_m/localeapp/-/localeapp-1.6.7.tgz",
+  "_resolved": "https://registry.npmjs.org/@mr_timur_m/localeapp/-/localeapp-1.7.1.tgz",
   "_shasum": "73111121a2402473c2d6396d18d0f38cd6bcd0dd",
-  "_spec": "@mr_timur_m/localeapp@1.6.7",
+  "_spec": "@mr_timur_m/localeapp@1.7.1",
   "_where": "/Users/timur/Projects/elopage_web_client",
   "author": {
     "name": "tymur.mirzada@gmail.com"
@@ -72,5 +72,5 @@
     "prepublish": "yarn test && yarn build",
     "test": "mocha --require @babel/register --reporter spec ./test ./src"
   },
-  "version": "1.6.7"
+  "version": "1.7.1"
 }
